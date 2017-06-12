@@ -1,0 +1,2 @@
+better-bencode==0.2.1
+jsonrpclib==0.1.7

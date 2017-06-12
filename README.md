@@ -113,7 +113,7 @@ The `-i` option opens an editor to edit torrent information.
 ## Development
 
 - Python 2.7
-- libtorrent
+- better-bencode
 - jsonrpclib
 
 ## License
