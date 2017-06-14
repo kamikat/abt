@@ -20,7 +20,7 @@ def main():
         command = command_source.split('.')[0]
         command_file = path.join(cli_path, command_source)
         command_module = load_source(command, command_file)
-        description = command_module.__doc__.strip() if command_module.__doc__ else ""
+        description = command_module.__doc__.strip().replace('\n', '\n' + ' ' * 20) if command_module.__doc__ else ""
         print "   %s %s" % ("{0: <16}".format(command), description)
     print
 
