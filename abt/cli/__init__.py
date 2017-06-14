@@ -3,6 +3,7 @@ import subprocess
 import argparse
 from os import path, listdir
 from imp import load_source
+from sys import exit as error
 
 progname = path.splitext(path.basename(sys.argv[0]))[0]
 progname = "abt %s" % progname if progname != "abt" else "abt"

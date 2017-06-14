@@ -24,12 +24,12 @@ if __name__ == '__main__':
     aria2, _ = client.connect()
 
     if args.uri:
-        torrent_file = tempfile.mkstemp()
-        ret = os.system("aria2c --no-conf --async-dns=false --dir=%s --out=%s \"%s\"" % (os.path.dirname(torrent_file),
-                                                                                         os.path.basename(torrent_file),
-                                                                                         args.uri))
+        _, torrent_file = tempfile.mkstemp()
+        fmt = "aria2c --no-conf --allow-overwrite=true --follow-torrent=false --async-dns=false --dir=%s --out=%s \"%s\""
+        cmd = fmt % (os.path.dirname(torrent_file), os.path.basename(torrent_file), args.uri)
+        ret = os.system(cmd)
         if ret != 0:
-            cli.error("Failed. Cannot fetch torrent from %s", args.uri)
+            cli.error("Failed. Cannot fetch torrent from %s" % args.uri)
     else:
         torrent_file = args.torrent
 
