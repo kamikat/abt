@@ -50,34 +50,3 @@ def create_torrent_data(path, name=None, announce=None, announce_list=None, priv
         torrent['announce-list'] = [ [announce] for announce in announce_list ]
     torrent['info'] = info
     return torrent
-
-def main():
-    import sys
-    import argparse
-    import better_bencode as bb
-
-    parser = argparse.ArgumentParser(description="Create torrent.")
-    parser.add_argument('path', action='store', help="the path of file or directory to share")
-    parser.add_argument('--add-tracker', action='append', dest='announce_list', metavar='TRACKER',
-                                         help="add tracker (NOTE torrent without tracker can only be inferred from DHT)")
-    parser.add_argument('--comment', action='store', help="add torrent file comment")
-    parser.add_argument('--name', action='store', help="set name of shared file/directory")
-    parser.add_argument('--private', action='store_true', help="flag for restricted access")
-    parser.add_argument('--output', action='store', help="save torrent to file")
-    args = parser.parse_args()
-
-    torrent = create_torrent_data(args.path, name=args.name, announce_list=args.announce_list, private_flag=args.private)
-
-    if args.comment:
-        torrent['comment'] = args.comment
-
-    out = sys.stdout
-
-    if args.output:
-        out = open(args.output, 'wb')
-
-    out.write(bb.dumps(torrent))
-
-if __name__ == '__main__':
-    main()
-
