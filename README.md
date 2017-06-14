@@ -104,7 +104,7 @@ Removed task can be added back for seeding with `abt add <task_folder>`.
 
 Re-index storage root.
 
-#### `abt create-torrent [-i] [<task_folder>]`
+#### `abt new-torrent [-i] [<task_folder>]`
 
 Generate torrent file for files in `<task_folder>`. When `<task_folder>` is omitted, a torrent file will be created for current directory. For security, `abt` will refuse to create a torrent for storage root.
 
