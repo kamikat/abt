@@ -24,4 +24,3 @@ def main():
         print "   %s %s" % ("{0: <16}".format(command), description)
     print
 
-main()
