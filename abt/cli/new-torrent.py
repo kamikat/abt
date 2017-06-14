@@ -11,7 +11,7 @@ import abt.torrent as torrent
 import abt.cli as cli
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog=cli.progname, description="Create torrent.")
+    parser = argparse.ArgumentParser(prog=cli.progname, description=__doc__.strip())
     parser.add_argument('path', action='store', help="the path of file or directory to share")
     parser.add_argument('--add-tracker', action='append', dest='announce_list', metavar='TRACKER',
                                          help="add tracker (NOTE torrent without tracker can only be inferred from DHT)")
