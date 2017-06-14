@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     if args.torrent:
         torrent_data = open(args.torrent, 'rb').read()
-        torrent_b64 = base64.b64encode
+        torrent_b64 = base64.b64encode(torrent_data)
         print aria2.addTorrent(torrent_b64, [], options)
     else:
         options['follow-torrent'] = 'true'
