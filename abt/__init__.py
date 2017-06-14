@@ -1,1 +1,1 @@
-from __main__ import main
+from abt.cli import main
