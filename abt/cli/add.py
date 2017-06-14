@@ -8,6 +8,8 @@ import argparse
 import abt.cli as cli
 import abt.rpc_client as client
 import base64
+import os
+import tempfile
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog=cli.progname, description=__doc__.strip())
@@ -21,11 +23,17 @@ if __name__ == '__main__':
 
     aria2, _ = client.connect()
 
-    if args.torrent:
-        torrent_data = open(args.torrent, 'rb').read()
-        torrent_b64 = base64.b64encode(torrent_data)
-        print aria2.addTorrent(torrent_b64, [], options)
+    if args.uri:
+        torrent_file = tempfile.mkstemp()
+        ret = os.system("aria2c --no-conf --async-dns=false --dir=%s --out=%s \"%s\"" % (os.path.dirname(torrent_file),
+                                                                                         os.path.basename(torrent_file),
+                                                                                         args.uri))
+        if ret != 0:
+            cli.error("Failed. Cannot fetch torrent from %s", args.uri)
     else:
-        options['follow-torrent'] = 'true'
-        print aria2.addUri([args.uri], options)
+        torrent_file = args.torrent
+
+    torrent_data = open(torrent_file, 'rb').read()
+    torrent_b64 = base64.b64encode(torrent_data)
+    print aria2.addTorrent(torrent_b64, [], options)
 
