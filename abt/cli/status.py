@@ -20,7 +20,7 @@ def print_status(aria2, version_info):
 
     summary = aria2.getGlobalStat()
 
-    print "({0} active, {1} waiting, {3} stopped)".format(
+    print "({0} active, {1} waiting, {2} stopped)".format(
             summary['numActive'], summary['numWaiting'],
             summary['numStopped'], summary['numStoppedTotal'])
 
