@@ -7,78 +7,40 @@ Show aria2 status
 import argparse
 import abt.cli as cli
 import abt.rpc_client as client
-from humanize import naturalsize
+import abt.format as fmt
 
-def format_speed(speed):
-    if int(speed) == 0:
-        return "-"
-    else:
-        return "%s/s" % naturalsize(speed)
+keys = ['gid', 'status', 'totalLength', 'completedLength', 'connections', 'numSeeders', 'seeder', 'dir', 'uploadSpeed', 'downloadSpeed']
 
 def print_status(aria2, active=True, waiting=False, stopped=False):
     summary = aria2.getGlobalStat()
 
-    print "aria2 ({0} active, {1} waiting, {2} stopped)".format(
-            summary['numActive'], summary['numWaiting'],
-            summary['numStopped'], summary['numStoppedTotal'])
+    print "aria2 ({numActive} active, {numWaiting} waiting, {numStopped} stopped)".format(**summary)
+
+    def print_tasks(pattern, tasks):
+        if len(tasks) == 0:
+            print "  (empty)"
+        for task in tasks:
+            print pattern % fmt.Task(task)
 
     if active:
-        print_active(aria2)
+        print
+        print "Active Tasks (gid/sz/prg/conn/up/down):\n"
+        print_tasks("  %(gid)s %(sz)s %(prg)s  %(conn)s %(up)s %(down)s", aria2.tellActive(keys))
 
     if waiting:
-        print_waiting(aria2)
+        print
+        print "Waiting Tasks (gid/sz/prg/dir):\n"
+        print_tasks("  %(gid)s %(sz)s %(prg)s  %(dir)s", aria2.tellWaiting(0, 999, keys))
 
     if stopped:
-        print_stopped(aria2)
+        print
+        print "Stopped Tasks (gid/sz/prg/dir):\n"
+        print_tasks("  %(gid)s %(sz)s %(prg)s  %(dir)s", aria2.tellStopped(0, 999, keys))
 
     print
-    print u"\u21f1 {0}/s".format(naturalsize(summary['uploadSpeed']))
-    print u"\u21f2 {0}/s".format(naturalsize(summary['downloadSpeed']))
+    print u"\u21f1 {}".format(fmt.format_speed(summary['uploadSpeed']))
+    print u"\u21f2 {}".format(fmt.format_speed(summary['downloadSpeed']))
     print
-
-def print_active(aria2):
-    print
-    print "Active Tasks (gid/sz/prg/conn/up/down):\n"
-    active_info = aria2.tellActive(['gid', 'totalLength', 'completedLength', 'connections', 'numSeeders', 'seeder', 'dir', 'uploadSpeed', 'downloadSpeed'])
-    if len(active_info) == 0:
-        print "  (empty)"
-        return
-    for info in active_info:
-        print "  {0:<16} {1:>10} {2:>4.0f}% {3:<6} {4:<11} {5:<11}".format(
-                info['gid'],
-                naturalsize(info['totalLength']) if int(info['totalLength']) > 0 else "-",
-                round(100 * float(info['completedLength']) / float(info['totalLength'])) if int(info['totalLength']) > 0 else "-",
-                "%s(%s)" % (info['connections'], info['numSeeders']) if info['seeder'] != 'true' else info['connections'],
-                format_speed(info['uploadSpeed']),
-                format_speed(info['downloadSpeed']))
-
-def print_waiting(aria2):
-    print
-    print "Waiting Tasks (gid/sz/prg/dir):\n"
-    task_info = aria2.tellWaiting(0, 100, ['gid', 'totalLength', 'completedLength', 'connections', 'numSeeders', 'seeder', 'dir', 'uploadSpeed', 'downloadSpeed'])
-    if len(task_info) == 0:
-        print "  (empty)"
-        return
-    for info in task_info:
-        print "  {0:<16} {1:>10} {2:>4.0f}% {3}".format(
-                info['gid'],
-                naturalsize(info['totalLength']) if int(info['totalLength']) > 0 else "-",
-                round(100 * float(info['completedLength']) / float(info['totalLength'])) if int(info['totalLength']) > 0 else "-",
-                info['dir'])
-
-def print_stopped(aria2):
-    print
-    print "Stopped Tasks (gid/sz/prg/dir):\n"
-    task_info = aria2.tellStopped(0, 100, ['gid', 'totalLength', 'completedLength', 'connections', 'numSeeders', 'seeder', 'dir', 'uploadSpeed', 'downloadSpeed'])
-    if len(task_info) == 0:
-        print "  (empty)"
-        return
-    for info in task_info:
-        print "  {0:<16} {1:>10} {2:>4.0f}% {3}".format(
-                info['gid'],
-                naturalsize(info['totalLength']) if int(info['totalLength']) > 0 else "-",
-                round(100 * float(info['completedLength']) / float(info['totalLength'])) if int(info['totalLength']) > 0 else "-",
-                info['dir'])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog=cli.progname, description=__doc__.strip())
