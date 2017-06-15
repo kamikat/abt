@@ -24,7 +24,7 @@ def main():
     print "       %s <command> [-h]\n" % progname
     print "abt is a BitTorrent management workflow.\n"
     print "List of Commands:"
-    for command_source in listdir(cli_path):
+    for command_source in sorted(listdir(cli_path)):
         if command_source.endswith('.pyc') or command_source.startswith('__'):
             continue
         command = command_source.split('.')[0]
