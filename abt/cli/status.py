@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 """
-Show aria2 daemon/task status
+Show aria2 status
 """
 
 import argparse
@@ -36,7 +36,7 @@ if __name__ == '__main__':
             summary['numActive'], summary['numWaiting'],
             summary['numStopped'], summary['numStoppedTotal'])
 
-    active_info = aria2.tellActive(['gid', 'totalLength', 'completedLength', 'connections', 'numSeeders', 'dir', 'uploadSpeed', 'downloadSpeed'])
+    active_info = aria2.tellActive(['gid', 'totalLength', 'completedLength', 'connections', 'numSeeders', 'seeder', 'dir', 'uploadSpeed', 'downloadSpeed'])
 
     if active_info:
         print
@@ -45,7 +45,7 @@ if __name__ == '__main__':
             print "  {0:<16} {1:>10} {2:>4.0f}% {3:<6} {4:<11} {5:<11}".format(
                     info['gid'], naturalsize(info['totalLength']),
                     round(100 * float(info['completedLength']) / float(info['totalLength'])),
-                    "%s(%s)" % (info['connections'], info['numSeeders']),
+                    "%s(%s)" % (info['connections'], info['numSeeders']) if info['seeder'] != 'true' else info['connections'],
                     format_speed(info['uploadSpeed']),
                     format_speed(info['downloadSpeed']))
     print
