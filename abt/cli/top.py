@@ -28,7 +28,7 @@ def top(screen):
             screen.clear()
             scrout = StdOutWrapper()
             sys.stdout = scrout # override stdout
-            abt.cli.status.print_status(aria2, version_info)
+            abt.cli.status.print_status(aria2)
             screen.addstr(0, 0, scrout.text.encode('utf-8'))
             screen.refresh()
             time.sleep(1)
