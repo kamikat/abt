@@ -15,19 +15,7 @@ def format_speed(speed):
     else:
         return "%s/s" % naturalsize(speed)
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog=cli.progname, description=__doc__.strip())
-    parser.add_argument('pathspec', nargs='?', action='store', help="path to task folder")
-    conn, extra = cli.parse_connection_options()
-    args, extra = parser.parse_known_args(extra)
-
-    aria2, _ = client.connect(**conn)
-
-    try:
-        version_info = aria2.getVersion()
-    except:
-        cli.error("aria2 is not running.")
-
+def print_status(aria2, version_info):
     print "aria2 %s" % version_info['version'],
 
     summary = aria2.getGlobalStat()
@@ -52,3 +40,19 @@ if __name__ == '__main__':
     print u"\u21f1 {0}/s".format(naturalsize(summary['uploadSpeed']))
     print u"\u21f2 {0}/s".format(naturalsize(summary['downloadSpeed']))
     print
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(prog=cli.progname, description=__doc__.strip())
+    parser.add_argument('pathspec', nargs='?', action='store', help="path to task folder")
+    conn, extra = cli.parse_connection_options()
+    args, extra = parser.parse_known_args(extra)
+    aria2, _ = client.connect(**conn)
+
+    try:
+        version_info = aria2.getVersion()
+    except:
+        cli.error("aria2 is not running.")
+
+    if not args.pathspec:
+        print_status(aria2, version_info)
+
