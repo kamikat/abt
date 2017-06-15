@@ -15,13 +15,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog=cli.progname, description=__doc__.strip())
     parser.add_argument('torrent', nargs='?', action='store', help="path to torrent file")
     parser.add_argument('--uri', action='store', help="load torrent file from uri")
-    args, extra = parser.parse_known_args()
+    conn, extra = cli.parse_connection_options()
+    args, extra = parser.parse_known_args(extra)
     options = cli.parse_options(extra)
 
     if (not args.torrent) == (not args.uri):
         parser.error("Exactly one of torrent file path or --uri is expected.")
 
-    aria2, _ = client.connect()
+    aria2, _ = client.connect(**conn)
 
     if args.uri:
         _, torrent_file = tempfile.mkstemp()
