@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 """
-Show aria2 status in top
+Show aria2 status in top-like style
 """
 
 import argparse
