@@ -1,2 +1,3 @@
 better-bencode==0.2.1
+humanize==0.5.1
 jsonrpclib==0.1.7
