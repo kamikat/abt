@@ -14,7 +14,10 @@ def main():
     if len(sys.argv) > 1:
         command = path.join(cli_path, "%s.py" % sys.argv[1])
         if path.exists(command):
-            subprocess.call([sys.executable, command] + sys.argv[2:])
+            try:
+                subprocess.call([sys.executable, command] + sys.argv[2:])
+            except KeyboardInterrupt:
+                pass
             return
     print "usage: %s <command> [<args>]" % progname
     print "       %s <command> [--jsonrpc JSONRPC] [--no-verify] [--ca-certificate CA_CERTIFICATE] [<args>]" % progname
