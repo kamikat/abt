@@ -13,7 +13,7 @@ Run `abt` shows basic usage and available sub-commands.
 Add a BitTorrent task form local torrent file:
 
 ```
-abt add path/to/file.torrent
+abt add ubuntu-17.04-desktop-amd64.iso.torrent
 ```
 
 Use `--uri` to add a torrent file on web:
@@ -25,15 +25,21 @@ abt add --uri "http://releases.ubuntu.com/17.04/ubuntu-17.04-desktop-amd64.iso.t
 And you can add additional options to task:
 
 ```
-abt add path/to/file.torrent \
-  --dir=/media/Downloads/NewDownload \
+abt add ubuntu-17.04-desktop-amd64.iso.torrent \
+  --dir=/media/Downloads/ubuntu \
   --seed-ratio=1.0
 ```
 
-To save files to `/media/Downloads/NewDownload` and stop seeding on seed ratio reaching `1.0`
+To save files to `/media/Downloads/ubuntu` and stop seeding on seed ratio reaching `1.0`
 (see [full list of options][options]).
 
 Run `abt status` to show task status.
+
+### Customized RPC service
+
+abt connects to aria2 RPC on http://localhost:6800 by default. You can change that by specifying `--jsonrpc` option.
+If you're using HTTPS with certificate signed by self-signed CA. You can add CA certificate with `--ca-certificate` (for CA certificate only).
+There's a `--no-verify` option for self-signed root certificate which is considered insecure and should better be avoided.
 
 ## aria2.conf
 
