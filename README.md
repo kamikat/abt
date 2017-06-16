@@ -4,7 +4,9 @@
 
 BitTorrent workflow with [aria2][aria2].
 
-abt is available on PyPI:
+## Installation
+
+Using [pip](https://pip.pypa.io/en/stable/installing/):
 
 ```shell
 pip install abt
