@@ -16,8 +16,8 @@ if __name__ == '__main__':
     parser.add_argument('torrent', nargs='?', action='store', help="path to torrent file")
     parser.add_argument('--uri', action='store', help="load torrent file from uri")
     conn, extra = cli.parse_connection_options()
-    args, extra = parser.parse_known_args(extra)
-    options = cli.parse_options(extra)
+    options, extra = cli.parse_option_dict(extra)
+    args = parser.parse_args(extra)
 
     if (not args.torrent) == (not args.uri):
         parser.error("Exactly one of torrent file path or --uri is expected.")

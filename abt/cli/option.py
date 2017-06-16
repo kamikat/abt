@@ -19,8 +19,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog=cli.progname, description=__doc__.strip())
     parser.add_argument('gid', nargs='?', action='store', help="gid to show/change options of")
     conn, extra = cli.parse_connection_options()
-    args, extra = parser.parse_known_args(extra)
-    options = cli.parse_options(extra)
+    options, extra = cli.parse_option_dict(extra)
+    args = parser.parse_args(extra)
     aria2, _ = client.connect(**conn)
 
     if not args.gid:

@@ -1,7 +1,9 @@
 import sys
 import subprocess
 import argparse
+import re
 import abt.rpc_client as client
+
 from os import path, listdir
 from imp import load_source
 from sys import exit as error
@@ -21,6 +23,7 @@ def main():
             return
     print "usage: %s <command> [<args>]" % progname
     print "       %s <command> [--jsonrpc JSONRPC] [--no-verify] [--ca-certificate CA_CERTIFICATE] [<args>]" % progname
+    print "       %s <command> [<args>] [--<key>=<value> [--<key>=<value> ...]]" % progname
     print "       %s <command> [-h]\n" % progname
     print "abt is a BitTorrent management workflow.\n"
     print "List of Commands:"
@@ -54,8 +57,14 @@ class StoreToDict(argparse.Action):
             d[k] = v
         setattr(namespace, self.dest, d)
 
-def parse_options(args):
-    parser = argparse.ArgumentParser(prefix_chars=' ', prog="abt", usage="%(prog)s <command> [<args>] [--<key>=<value> [--<key>=<value> ...]]", add_help=False)
-    parser.add_argument("options", nargs="*", action=StoreToDict, default=dict())
-    return parser.parse_args(args).options
+def parse_option_dict(args):
+    options = {}
+    extra = []
+    for arg in args:
+        if re.match('--[a-zA-Z][a-zA-Z0-9-]*=.*', arg):
+            k, v = arg.split("=", 1)
+            options[k.lstrip('-')] = v
+        else:
+            extra.append(arg)
+    return options, extra
 
