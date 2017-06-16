@@ -1,6 +1,10 @@
 # abt
 
+[![Download](https://img.shields.io/pypi/v/abt.svg?maxAge=86400)](https://pypi.python.org/pypi/abt/)
+
 BitTorrent workflow with [aria2][aria2].
+
+abt is available on PyPI:
 
 ```shell
 pip install abt
