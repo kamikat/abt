@@ -35,7 +35,7 @@ def format_progress(total, prog):
     return round(100 * float(prog) / float(total))
 
 def format_conn(connections, numSeeders, seeder):
-    if bool(seeder):
+    if seeder == 'true':
         return connections
     else:
         return "%s(%s)" % (connections, numSeeders)
