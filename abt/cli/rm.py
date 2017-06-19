@@ -17,9 +17,12 @@ if __name__ == '__main__':
 
     aria2, _ = client.connect(**conn)
 
-    if args.force:
-        print aria2.forceRemove(args.gid)
-    else:
-        print aria2.remove(args.gid)
+    status = aria2.tellStatus(args.gid, ['status'])['status']
 
-    aria2.removeDownloadResult(args.gid)
+    if status in ['active', 'waiting', 'paused']:
+        if args.force:
+            aria2.forceRemove(args.gid)
+        else:
+            aria2.remove(args.gid)
+
+    print aria2.removeDownloadResult(args.gid)
