@@ -32,7 +32,7 @@ def format_speed(value):
     return "%s/s" % naturalsize(value)
 
 def format_progress(total, prog):
-    return round(100 * float(prog) / float(total))
+    return "{:.0f}%".format(round(100 * float(prog) / float(total)))
 
 def format_conn(connections, numSeeders, seeder):
     if seeder == 'true':
@@ -43,7 +43,7 @@ def format_conn(connections, numSeeders, seeder):
 add_column_def('gid', '{:<16}')
 add_column_def('status', transform=format_status)
 add_column_def('sz', '{:>10}', 'totalLength', transform=nozero(naturalsize))
-add_column_def('prg', '{:>4.0f}%', ['totalLength','completedLength'], transform=nozero(format_progress))
+add_column_def('prg', '{:>5}', ['totalLength','completedLength'], transform=nozero(format_progress))
 add_column_def('conn', '{:<6}', ['connections','numSeeders', 'seeder'], transform=format_conn)
 add_column_def('up', '{:<11}', 'uploadSpeed', transform=nozero(format_speed))
 add_column_def('down', '{:<11}', 'downloadSpeed', transform=nozero(format_speed))
