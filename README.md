@@ -1,6 +1,6 @@
 # abt
 
-[![Download](https://img.shields.io/pypi/v/abt.svg?maxAge=86400)](https://pypi.python.org/pypi/abt/)
+[![PyPI version](https://badge.fury.io/py/abt.svg)](https://badge.fury.io/py/abt)
 
 BitTorrent workflow with [aria2][aria2].
 
